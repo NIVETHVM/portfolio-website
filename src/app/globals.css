@@ -1615,6 +1615,110 @@ html[data-theme="light"] .pj-vis {
   }
 }
 
+
+/* Desktop hero: one composition on a 1240 x 756 stage, scaled as a whole.
+   --s is one design pixel, so every size and position keeps its proportion. */
+@media (min-width: 901px) {
+  .top {
+    /* one design pixel of a 1440 x 900 screen, never smaller than 0.85px */
+    --v: max(0.85px, min(calc(100vw / 1440), calc(100vh / 900)));
+  }
+  .top .wrap {
+    max-width: none;
+    padding: 0;
+    /* as wide as the hero stage can be at this screen height, so nav, hero and strip line up */
+    width: min(86vw, calc(max(640px, 100svh - 144 * var(--v)) * 1240 / 756));
+  }
+  .top .nav {
+    height: calc(76 * var(--v));
+  }
+  .top .logo {
+    font-size: calc(30 * var(--v));
+  }
+  .top .nav-links {
+    gap: calc(28 * var(--v));
+    font-size: calc(12 * var(--v));
+  }
+  .top .icon-btn {
+    width: calc(44 * var(--v));
+    height: calc(44 * var(--v));
+  }
+  .top .icon-btn svg {
+    width: calc(18 * var(--v));
+    height: calc(18 * var(--v));
+  }
+  .top .hero {
+    height: max(640px, calc(100svh - 144 * var(--v)));
+  }
+  .top .hstrip {
+    height: calc(68 * var(--v));
+    font-size: calc(12 * var(--v));
+  }
+  .hero {
+    container-type: size;
+    --s: min(calc(100cqw / 1240), calc(100cqh / 756));
+  }
+  .hero-stage {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: calc(1240 * var(--s));
+    height: calc(756 * var(--s));
+    transform: translateX(-50%);
+  }
+  .hero-name {
+    top: calc(144 * var(--s));
+    font-size: calc(268 * var(--s));
+    text-shadow: 0 0 calc(60 * var(--s)) rgba(255, 42, 31, 0.35);
+  }
+  .portrait {
+    bottom: calc(-40 * var(--s));
+  }
+  .area {
+    gap: calc(10 * var(--s));
+  }
+  .a1,
+  .a2 {
+    top: calc(28 * var(--s));
+  }
+  .a3 {
+    bottom: calc(56 * var(--s));
+  }
+  .area .word {
+    font-size: calc(66 * var(--s));
+  }
+  .area .lab {
+    font-size: calc(12 * var(--s));
+  }
+  .area:hover .word,
+  .area:focus-visible .word {
+    transform: translateX(calc(8 * var(--s)));
+  }
+  .area.a2:hover .word,
+  .area.a2:focus-visible .word {
+    transform: translateX(calc(-8 * var(--s)));
+  }
+  .hero-info {
+    bottom: calc(56 * var(--s));
+    width: calc(310 * var(--s));
+    gap: calc(16 * var(--s));
+  }
+  .hero-info p {
+    font-size: calc(16 * var(--s));
+  }
+  .hero-info .btn {
+    font-size: calc(12 * var(--s));
+    min-height: calc(48 * var(--s));
+    padding: 0 calc(22 * var(--s));
+    gap: calc(10 * var(--s));
+  }
+}
+@media (max-width: 900px) {
+  .hero-stage {
+    display: contents;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -142,7 +142,7 @@ export default function Portrait({ mode, maxHeight, maxWidth }: Props) {
 
     const resize = () => {
       const { maxHeight: mh, maxWidth: mw } = sizeRef.current;
-      scale = Math.min(mh / (PORTRAIT_ROWS * BASE_CH), mw / (PORTRAIT_COLS * BASE_CW), 1.3);
+      scale = Math.min(mh / (PORTRAIT_ROWS * BASE_CH), mw / (PORTRAIT_COLS * BASE_CW), 3);
       scale = Math.max(scale, 0.35);
       cw = BASE_CW * scale;
       ch = BASE_CH * scale;

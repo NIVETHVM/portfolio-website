@@ -28,7 +28,9 @@ export default function Hero() {
         const w = Math.min(el.clientWidth, 520);
         setBox({ w, h: w * 1.12 });
       } else {
-        setBox({ h: el.clientHeight * 0.86, w: Math.min(el.clientWidth - 2 * 350, 560) });
+        // Same maths as the CSS --s unit: one design pixel of a 1240 x 756 stage.
+        const sc = Math.min(el.clientWidth / 1240, el.clientHeight / 756);
+        setBox({ h: 650 * sc, w: 540 * sc });
       }
     };
     measure();
@@ -44,6 +46,7 @@ export default function Hero() {
       <div className="wrap">
         <Nav />
         <section ref={heroRef} className="hero" aria-label="Introduction">
+          <div className="hero-stage">
           <p className="hero-name" aria-hidden="true">
             Niveth VM
           </p>
@@ -76,6 +79,7 @@ export default function Hero() {
                 Résumé ↓
               </a>
             </div>
+          </div>
           </div>
         </section>
         <div className="hstrip mono">
