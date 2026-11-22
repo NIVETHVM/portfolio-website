@@ -40,12 +40,15 @@ export default function SelectedWork() {
       mm.add("(min-width: 1181px) and (prefers-reduced-motion: no-preference)", () => {
         const stage = root.current?.querySelector<HTMLElement>(".sw-stage");
         const wheel = root.current?.querySelector<HTMLElement>(".wheel");
-        const card = root.current?.querySelector<HTMLElement>(".sw-card");
+        const card = root.current?.querySelector<HTMLElement>(".sw-left");
         if (!stage || !wheel || !card) return;
         // How far the wheel must move left to sit in the centre of the stage.
+        // Measured on the wheel's container, which is never transformed,
+        // so the result does not depend on where the animation currently is.
+        const holder = wheel.parentElement ?? wheel;
         const offset = () => {
           const s = stage.getBoundingClientRect();
-          const w = wheel.getBoundingClientRect();
+          const w = holder.getBoundingClientRect();
           return s.left + s.width / 2 - (w.left + w.width / 2);
         };
         gsap.set(wheel, { transformPerspective: 1400, rotationY: -24, rotationX: 6, x: 0 });
@@ -53,17 +56,21 @@ export default function SelectedWork() {
           scrollTrigger: {
             trigger: root.current,
             start: "top top",
-            end: "+=90%",
+            end: "+=120%",
             pin: true,
             scrub: 0.8,
             invalidateOnRefresh: true,
           },
         });
+        // 1. Only the wheel, centred and facing front. 2. It slides right while tilting.
+        // 3. Once it has arrived, the title and project card fade in.
         tl.fromTo(
           wheel,
           { x: () => offset(), rotationY: 0, rotationX: 0 },
           { x: 0, rotationY: -24, rotationX: 6, ease: "power2.inOut", duration: 1 }
-        ).fromTo(card, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.6 }, 0.45);
+        )
+          .fromTo(card, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, ease: "power2.out", duration: 0.5 }, 0.85)
+          .to({}, { duration: 0.25 });
       });
       return () => mm.revert();
     },

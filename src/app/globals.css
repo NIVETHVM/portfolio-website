@@ -1,12 +1,12 @@
 /* ---------- Tokens ---------- */
 :root,
 .force-dark {
-  --bg: #080807;
+  --bg: #151514;
   --panel: #0d0d0c;
-  --raise: #121211;
-  --raise-2: #161615;
-  --line: #2e2e2c;
-  --line-soft: #1e1e1d;
+  --raise: #1c1c1b;
+  --raise-2: #232322;
+  --line: #31312f;
+  --line-soft: #262625;
   --line-strong: #3a3a38;
   --ink: #eceae4;
   --ink-hi: #f6f4ee;
@@ -26,6 +26,9 @@
   color-scheme: dark;
 }
 
+html[data-theme="light"] body {
+  background-image: none;
+}
 html[data-theme="light"] {
   --bg: #eeede9;
   --panel: #e6e4de;
@@ -58,7 +61,9 @@ html {
 }
 body {
   margin: 0;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1.2px);
+  background-size: 22px 22px;
   color: var(--ink);
   font-family: var(--f-sans);
   font-size: 16px;
@@ -67,8 +72,10 @@ body {
   overflow-x: hidden;
 }
 .force-dark {
-  background: var(--bg);
   color: var(--ink);
+}
+html[data-theme="light"] .force-dark:not(.top) {
+  background: #151514;
 }
 a {
   color: inherit;
@@ -429,13 +436,24 @@ html.lenis body {
   font-weight: 500;
 }
 .hstrip {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 24px;
   height: 68px;
-  border-top: 1px solid var(--line);
   color: var(--muted);
+}
+/* the divider runs edge to edge across the whole hero panel */
+.hstrip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  background: var(--line);
+  transform: translateX(-50%);
 }
 .hs-item {
   display: inline-flex;
@@ -1463,6 +1481,18 @@ html[data-theme="light"] .pj-vis {
 }
 
 /* ---------- Responsive ---------- */
+@media (min-width: 1181px) {
+  /* the wheel sits in the middle of the screen while the section is pinned */
+  .sw {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  .sw > .wrap {
+    width: 100%;
+  }
+}
 @media (max-width: 1180px) {
   .sw-stage {
     grid-template-columns: minmax(0, 1fr);
@@ -1626,8 +1656,7 @@ html[data-theme="light"] .pj-vis {
   .top .wrap {
     max-width: none;
     padding: 0;
-    /* as wide as the hero stage can be at this screen height, so nav, hero and strip line up */
-    width: min(86vw, calc(max(640px, 100svh - 144 * var(--v)) * 1240 / 756));
+    width: 86vw;
   }
   .top .nav {
     height: calc(76 * var(--v));
@@ -1648,7 +1677,8 @@ html[data-theme="light"] .pj-vis {
     height: calc(18 * var(--v));
   }
   .top .hero {
-    height: max(640px, calc(100svh - 144 * var(--v)));
+    /* ends a little above the bottom of the screen so the curved edge shows */
+    height: max(600px, calc(100svh - 144 * var(--v) - 56px));
   }
   .top .hstrip {
     height: calc(68 * var(--v));
@@ -1659,12 +1689,12 @@ html[data-theme="light"] .pj-vis {
     --s: min(calc(100cqw / 1240), calc(100cqh / 756));
   }
   .hero-stage {
+    /* full width: the words sit at the edges, everything is sized by --s */
     position: absolute;
-    left: 50%;
+    left: 0;
+    right: 0;
     bottom: 0;
-    width: calc(1240 * var(--s));
     height: calc(756 * var(--s));
-    transform: translateX(-50%);
   }
   .hero-name {
     top: calc(144 * var(--s));
