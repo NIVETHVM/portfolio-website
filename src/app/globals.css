@@ -1,12 +1,12 @@
 /* ---------- Tokens ---------- */
 :root,
 .force-dark {
-  --bg: #151514;
+  --bg: #0a0a09;
   --panel: #0d0d0c;
-  --raise: #1c1c1b;
-  --raise-2: #232322;
-  --line: #31312f;
-  --line-soft: #262625;
+  --raise: #141413;
+  --raise-2: #1a1a19;
+  --line: #2c2c2a;
+  --line-soft: #1e1e1d;
   --line-strong: #3a3a38;
   --ink: #eceae4;
   --ink-hi: #f6f4ee;
@@ -27,7 +27,9 @@
 }
 
 html[data-theme="light"] body {
-  background-image: none;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px);
 }
 html[data-theme="light"] {
   --bg: #eeede9;
@@ -62,8 +64,12 @@ html {
 body {
   margin: 0;
   background-color: var(--bg);
-  background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1.2px);
-  background-size: 22px 22px;
+  /* faint graph-paper grid behind the page */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
   color: var(--ink);
   font-family: var(--f-sans);
   font-size: 16px;
@@ -75,7 +81,7 @@ body {
   color: var(--ink);
 }
 html[data-theme="light"] .force-dark:not(.top) {
-  background: #151514;
+  background: #0a0a09;
 }
 a {
   color: inherit;
@@ -329,7 +335,9 @@ html.lenis body {
 .top {
   background: var(--panel);
   border-radius: 0 0 36px 36px;
-  border-bottom: 1px solid var(--line);
+  /* a thin edge that follows the rounded corners, so the curve reads on a near-black page */
+  border: 1px solid #34342f;
+  border-top: 0;
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.9);
   position: relative;
   z-index: 2;
