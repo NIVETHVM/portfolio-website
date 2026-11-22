@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { SITE } from "@/data/projects";
 
 const LINKS = [
+  { href: "/", label: "Home" },
   { href: "/game-dev/", label: "Game Dev" },
   { href: "/software/", label: "Software" },
   { href: "/ai/", label: "AI & Automation" },
@@ -112,7 +113,6 @@ export default function Nav() {
           </button>
         </div>
         <nav aria-label="Menu">
-          <Link href="/" tabIndex={open ? 0 : -1}>Home</Link>
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} tabIndex={open ? 0 : -1} aria-current={isOn(l.href)}>
               {l.label}

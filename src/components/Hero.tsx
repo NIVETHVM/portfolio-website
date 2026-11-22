@@ -74,7 +74,12 @@ export default function Hero() {
       lenis()?.start();
       setIntro(false);
     };
-    if (!top || !name || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Only a full load or refresh of the home page sets this flag (see layout.tsx),
+    // so coming back from another page shows the finished hero straight away.
+    const w = window as unknown as { __intro?: boolean };
+    const play = w.__intro === true;
+    w.__intro = false;
+    if (!play || !top || !name || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       // Portrait shows itself straight away when motion is reduced.
       requestAnimationFrame(() => portrait.current?.finish());
       end();
