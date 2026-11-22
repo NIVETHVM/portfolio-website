@@ -338,7 +338,8 @@ html.lenis body {
 .hero {
   position: relative;
   height: max(640px, calc(100svh - 76px - 68px));
-  overflow: hidden;
+  /* not clipped: the portrait canvas spans the whole panel so characters can fly in from its edges */
+  overflow: visible;
 }
 .hero-name {
   position: absolute;

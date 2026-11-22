@@ -49,6 +49,7 @@ type Particles = {
   switchAt: Float64Array;
   col: Uint16Array;
   row: Uint16Array;
+  on: Uint8Array; // 0 = cropped off below the hero, never drawn
 };
 
 function buildParticles(): Particles {
@@ -81,6 +82,7 @@ function buildParticles(): Particles {
     switchAt: new Float64Array(n),
     col: new Uint16Array(n),
     row: new Uint16Array(n),
+    on: new Uint8Array(n).fill(1),
   };
   let seed = 7;
   const rand = () => {
@@ -117,6 +119,8 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
     if (!ctx) return;
     // The canvas covers the whole hero panel, so characters can fly in from its edges.
     const panel = (wrap.closest(".top") as HTMLElement | null) ?? wrap;
+    // Characters whose place is below the hero's bottom edge are cropped, like a photo.
+    const hero = (wrap.closest(".hero") as HTMLElement | null) ?? panel;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const P = buildParticles();
@@ -167,7 +171,7 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
         sx.scale(dpr, dpr);
         sx.fillStyle = SILHOUETTE;
         for (let i = 0; i < P.n; i++) {
-          sx.fillRect(ox + P.col[i] * cw - 1, oy + P.row[i] * ch - 1, cw + 2, ch + 2);
+          if (P.on[i]) sx.fillRect(ox + P.col[i] * cw - 1, oy + P.row[i] * ch - 1, cw + 2, ch + 2);
         }
       }
       silhouette = s;
@@ -184,6 +188,7 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       for (let i = 0; i < P.n; i++) {
+        if (!P.on[i]) continue;
         const g = P.shown[i] ? P.gBin[i] : P.gXO[i];
         const img = atlas[g]?.[P.level[i]];
         if (img) ctx.drawImage(img, P.x[i], P.y[i], cw, ch);
@@ -207,6 +212,7 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
       oy = wr.top - pr.top;
       pw = pr.width;
       ph = pr.height;
+      const cutY = hero.getBoundingClientRect().bottom - pr.top;
       canvas.style.left = `${-ox}px`;
       canvas.style.top = `${-oy}px`;
       canvas.style.width = `${pw}px`;
@@ -216,6 +222,7 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
       for (let i = 0; i < P.n; i++) {
         P.hx[i] = ox + P.col[i] * cw;
         P.hy[i] = oy + P.row[i] * ch;
+        P.on[i] = P.hy[i] + ch * 0.5 <= cutY ? 1 : 0;
         if (phase === "live") {
           P.x[i] = P.hx[i];
           P.y[i] = P.hy[i];
