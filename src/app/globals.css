@@ -517,11 +517,14 @@ html.lenis body {
 
 
 /* ---------- Home intro ---------- */
+/* After the intro these are plain text, so the name and its glow render exactly as normal. */
 .n-grow {
+  white-space: pre;
+}
+html.intro .n-grow {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  white-space: pre;
 }
 .n-dot {
   display: none;
@@ -538,7 +541,7 @@ html.intro .hero-name {
   color: var(--ink);
   text-shadow: none;
 }
-html.intro .n-grow {
+html.intro .n-grow:not([style*="width"]) {
   width: 0;
 }
 html.intro .n-dot {

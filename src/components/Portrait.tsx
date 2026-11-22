@@ -98,7 +98,8 @@ function buildParticles(): Particles {
   return p;
 }
 
-const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+// Gentle start and finish, so each character is seen travelling from the screen edge.
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = false, control }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -235,7 +236,7 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
           P.y[i] = P.hy[i];
         } else {
           done = false;
-          const e = easeOut(Math.max(0, t));
+          const e = ease(Math.max(0, t));
           P.x[i] = P.sx[i] + (P.hx[i] - P.sx[i]) * e;
           P.y[i] = P.sy[i] + (P.hy[i] - P.sy[i]) * e;
         }
@@ -319,9 +320,9 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
       const cy = oy + (PORTRAIT_ROWS * ch) / 2;
       const maxD = Math.hypot(pw, ph) / 2 || 1;
       for (let i = 0; i < P.n; i++) {
-        // Start somewhere just outside one of the four edges of the hero panel.
+        // Start right at one of the four edges of the screen.
         const side = Math.floor(Math.random() * 4);
-        const m = 40 + Math.random() * 160;
+        const m = Math.random() * 30;
         const along = Math.random();
         P.sx[i] = side === 0 ? -m : side === 1 ? pw + m : along * pw;
         P.sy[i] = side === 2 ? -m : side === 3 ? ph + m : along * ph;
@@ -329,8 +330,8 @@ export default function Portrait({ mode, maxHeight, maxWidth, waitForIntro = fal
         P.y[i] = P.sy[i];
         // Characters near the middle of the face arrive first.
         const d = Math.hypot(P.hx[i] - cx, P.hy[i] - cy) / maxD;
-        P.t0[i] = now + d * ms * 0.35 + Math.random() * ms * 0.15;
-        P.dur[i] = ms * (0.45 + Math.random() * 0.15);
+        P.t0[i] = now + d * ms * 0.25 + Math.random() * ms * 0.15;
+        P.dur[i] = ms * (0.55 + Math.random() * 0.05);
       }
       phase = "intro";
       kick();

@@ -41,7 +41,7 @@ export const viewport: Viewport = {
 
 // Runs before paint: applies the saved theme and marks that JS is available.
 // On the home page it also starts the intro state, with a safety timeout in case scripts fail.
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},8000);}})();`;
+const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},12000);}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

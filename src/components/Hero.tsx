@@ -27,8 +27,8 @@ const WORDS: { key: Key; cls: string; href: string; lab: string; word: ReactNode
   },
 ];
 
-// Intro timing, in seconds. About 3.5s in total.
-const T = { hold: 0.5, expand: 0.8, portraitAt: 1.2, portraitMs: 1700, textAt: 2.85 };
+// Intro timing, in seconds (portraitMs in milliseconds). About 6.6s in total.
+const T = { hold: 0.8, expand: 2.5, portraitAt: 3.5, portraitMs: 3000, textAt: 6 };
 
 type LenisLike = { stop: () => void; start: () => void };
 const lenis = () => (window as unknown as { __lenis?: LenisLike }).__lenis;
@@ -112,7 +112,7 @@ export default function Hero() {
       .fromTo(
         name,
         { color: "#ECEAE4", textShadow: "0 0 0px rgba(255, 42, 31, 0)" },
-        { color: "#FF2A1F", textShadow: "0 0 60px rgba(255, 42, 31, 0.35)", duration: 1, ease: "power1.inOut" },
+        { color: "#FF2A1F", textShadow: "0 0 60px rgba(255, 42, 31, 0.35)", duration: T.expand, ease: "power1.inOut" },
         T.hold + 0.1
       )
       .call(() => portrait.current?.assemble(T.portraitMs), [], T.portraitAt)
